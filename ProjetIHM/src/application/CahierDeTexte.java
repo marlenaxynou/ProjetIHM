@@ -1,11 +1,17 @@
 package application;
 
 import javafx.stage.Stage;
+
+import java.util.Optional;
+
 import javafx.application.Application;
+import javafx.css.Size;
+import javafx.event.EventHandler;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -13,6 +19,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.geometry.*;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.layout.Region;
@@ -41,26 +49,26 @@ public class CahierTexte extends Application{
 		Region spacer = new Region(); // Region est un conteneur- vide qui peut occuper l'espace horizontal/vertical 
 		hbox.setHgrow(spacer, Priority.ALWAYS); // setHgrow spécifit comment l'espace sur la ligne va être occupé.
 		
-		Button accueil = new Button("Accueil");		
+		Button accueil = new Button("Accueil"); // a faire: renvoie vers la page "Accueil"
 		hbox.setMargin(accueil, new Insets(20, 0, 0, 0));
 		accueil.setPrefSize(130, 50);
 		
-		MenuButton ressource = new MenuButton("Ressources élèves");
+		MenuButton ressource = new MenuButton("Ressources élèves"); // a faire: mettre les MenuItem présents dans la page d'accueil.
 		hbox.setMargin(ressource, new Insets(20, 0, 0, 0));
 		ressource.setPrefSize(130, 50);
 
-		MenuButton outil = new MenuButton("Outils");
+		MenuButton outil = new MenuButton("Outils"); // a faire: mettre les MenuItem présents dans la page d'accueil. Comme la page calculatrice et d'autres pages web.
 		hbox.setMargin(outil, new Insets(20, 0, 0, 0));
 		outil.setPrefSize(130, 50);
 
-		Button profil = new Button("Profil");
+		Button profil = new Button("Profil"); // a faire: renvoie vers la page "Profil"
 		hbox.setMargin(profil, new Insets(20, 0, 0, 0));
 		profil.setPrefSize(130, 50);
 
 		ImageView imContact = new ImageView (new Image (getClass().getResourceAsStream("/Photo/contact.png")));
 		imContact.setFitWidth(20);
 		imContact.setFitHeight(20);
-		Button contact = new Button("Contact", imContact);
+		Button contact = new Button("Contact", imContact); // renvoie vers la page de contact
 		hbox.setMargin(contact, new Insets(20, 0, 0, 0));
 		contact.setPrefSize(130, 50);
 
@@ -92,25 +100,53 @@ public class CahierTexte extends Application{
 
 		TitledPane dateLabel1 = new TitledPane(); // TitledPane est un panneau avec un titre qui peut être ouvert ou fermé. TitledPance est une extension de Labeled.		
 		
-		ImageView etoile = new ImageView(new Image(getClass().getResourceAsStream("/Photo/etoile.png")));
-		etoile.setFitHeight(50);
-		etoile.setFitWidth(50);
-		Label titleSeance = new Label ("Séance du vendredi 18 octobre 2024", etoile);
+		Image etoile = new Image(getClass().getResourceAsStream("/Photo/etoile.png"));
+		ImageView ImEtoile1 = new ImageView(etoile);
+		ImEtoile1.setFitHeight(50);
+		ImEtoile1.setFitWidth(50);
+		Label titleSeance = new Label ("Séance du vendredi 18 octobre 2024", ImEtoile1);
 		titleSeance.setFont(Font.font("Calibri", FontWeight.BOLD, 14));
 		titleSeance.setTextFill(Color.web("#2233AA"));
 		
 		Label probleme140 = new Label("Problème n° 140.");
 		Hyperlink correctionProbleme140 = new Hyperlink("[Correction]");
+		EventHandler <MouseEvent> c = new EventHandler <MouseEvent> () {
+			@Override
+			public void handle (MouseEvent e) {
+				String url = "https://ressources.profmath.fr/pdfjs2/web/viewer.html?file=../../web_pdf/3igk89l07.pdf";
+				getHostServices().showDocument(url);
+			}
+		};
+		correctionProbleme140.addEventHandler(MouseEvent.MOUSE_CLICKED, c);
+		
 		HBox seanceLine1 = new HBox ();
 		seanceLine1.getChildren().addAll(probleme140, correctionProbleme140);
 		
 		Label exercice9 = new Label("Exercice n°9.");
 		Hyperlink correctionExercice9 = new Hyperlink("[Correction]");
+		EventHandler <MouseEvent> d = new EventHandler <> () {
+			@Override
+			public void handle (MouseEvent e) {
+				String url = "https://ressources.profmath.fr/pdfjs2/web/viewer.html?file=../../web_pdf/3inukh6ex.pdf";
+				getHostServices().showDocument(url);
+			}
+		};
+		correctionExercice9.addEventHandler(MouseEvent.MOUSE_CLICKED, d);
+		
 		HBox seanceLine2 = new HBox ();
 		seanceLine2.getChildren().addAll(exercice9, correctionExercice9);
 		
 		Hyperlink consigneBelleFigure = new Hyperlink("Consignes pour la construction de belles figure de géométrie.");
-		Hyperlink debutConstruction = new Hyperlink("Début d'une construction.");		
+		Hyperlink debutConstruction = new Hyperlink("Début d'une construction."); // a faire : renvoie vers la page "belles figures de géométrie"		
+		EventHandler <MouseEvent> g = new EventHandler <>() {
+			@Override 
+			public void handle(MouseEvent e) {
+				String url = "https://profmath.fr/docs/geometrie/sources/GeometriePourLePlaisir/Tome1Figure03/GP_1-03.pdf";
+				getHostServices().showDocument(url);
+			}
+		};
+		debutConstruction.addEventHandler(MouseEvent.MOUSE_CLICKED, g);
+		
 	
 		dateContent.setMargin(seanceLine1, new Insets(0, 0, 0, 50));
 		dateContent.setMargin(seanceLine2, new Insets(0, 0, 0, 50));
@@ -118,19 +154,23 @@ public class CahierTexte extends Application{
 		dateContent.setMargin(debutConstruction, new Insets(0, 0, 0, 50));
 		dateContent.getChildren().addAll(titleSeance, seanceLine1, seanceLine2, consigneBelleFigure, debutConstruction);
 		
-		ImageView fleche = new ImageView (new Image(getClass().getResourceAsStream("/Photo/fleche.png")));
-		Label titreDevoir = new Label ("Devoirs", fleche);
+		Image fleche = new Image(getClass().getResourceAsStream("/Photo/fleche.png"));
+		ImageView ImFleche1 = new ImageView (fleche);
+		ImFleche1.setFitHeight(50);
+		ImFleche1.setFitWidth(50);
+		Label titreDevoir = new Label ("Devoirs", ImFleche1);
 		titreDevoir.setFont(Font.font("Calibri", FontWeight.BOLD, 14));
 		titreDevoir.setTextFill(Color.web("#2233AA"));
-		fleche.setFitHeight(50);
-		fleche.setFitWidth(50);
 		
-		CheckBox devoirLine= new CheckBox("Rendre une construction de géométrie de son choix (ne pas oublier d'indiquer de quoi il s'agit.");
+		
+		CheckBox devoirLine= new CheckBox("Rendre une construction de géométrie de son choix (ne pas oublier d'indiquer de quoi il s'agit.)");
 		dateContent.setMargin(devoirLine, new Insets(0, 0, 0, 50));
 		
 		dateContent.getChildren().addAll(titreDevoir, devoirLine);
 		dateLabel1.setText("Lundi 4 novembre 2024");
+		dateLabel1.setFont(Font.font("Calibri", FontWeight.BOLD,14));
 		dateLabel1.setContent(dateContent);
+		dateLabel1.setAlignment(Pos.CENTER);
 		
 		dateContent.setMargin(seanceLine1, new Insets(0, 0, 0, 50));
 		dateContent.setMargin(seanceLine2, new Insets(0, 0, 0, 50));
@@ -140,29 +180,65 @@ public class CahierTexte extends Application{
 		
 		TitledPane dateLabel2 = new TitledPane();
 		dateLabel2.setText("Jeudi 17 octobre 2024");
+		dateLabel2.setAlignment(Pos.CENTER);
+		dateLabel2.setFont(Font.font("Calibri", FontWeight.BOLD,14));
 		
 		VBox dateContent2 = new VBox();
 		dateLabel2.setContent(dateContent2);
-		Label titleSeance2 = new Label ("Séance du jeudi 17 octobre 2024", etoile);
+		ImageView ImEtoile2 = new ImageView(etoile);
+		ImEtoile2.setFitHeight(50);
+		ImEtoile2.setFitWidth(50);
+		Label titleSeance2 = new Label ("Séance du jeudi 17 octobre 2024", ImEtoile2);
 		titleSeance2.setFont(Font.font("Calibri", FontWeight.BOLD, 14));
 		titleSeance2.setTextFill(Color.web("#2233AA"));
 		
 		Label presentationExpo = new Label("Présentation des exposés par les élèves.");
 		Hyperlink evaluationCourte = new Hyperlink("Evaluation courte.");
+		EventHandler <MouseEvent> f = new EventHandler <>() {
+			@Override 
+			public void handle(MouseEvent e) {
+				String url = "https://ds.ac-bordeaux.fr/discovery/WAYF?entityID=https%3A%2F%2Fent2d.ac-bordeaux.fr%2Fshibboleth&return=https%3A%2F%2Fent2d.ac-bordeaux.fr%2FShibboleth.sso%2FLogin%3FSAMLDS%3D1%26target%3Dhttps%253A%252F%252Fent2d.ac-bordeaux.fr%252Fsacoche%252Findex.php%253Fsso%253D0333121N%2526page%253Devaluation_voir";
+				getHostServices().showDocument(url);
+			}
+		};
+		evaluationCourte.addEventHandler(MouseEvent.MOUSE_CLICKED, f);
 		
 		Label exercice87 = new Label ("Exercice n°87");
 		Hyperlink correctionExercice87 = new Hyperlink("[Correction]");
+		EventHandler <MouseEvent> a = new EventHandler <MouseEvent> (){
+			@Override
+			public void handle(MouseEvent e) {
+				String url = "https://ressources.profmath.fr/pdfjs2/web/viewer.html?file=../../web_pdf/3imicc5af.pdf";
+				getHostServices().showDocument(url);
+			}
+		};
+		correctionExercice87.addEventHandler(MouseEvent.MOUSE_CLICKED, a);
+		
 		HBox seanceLine3 = new HBox();
 		seanceLine3.getChildren().addAll(exercice87, correctionExercice87);
 		
 		Hyperlink enonceProbleme140 = new Hyperlink("[énoncé]");
-		Label phrase = new Label (" Cherché par certains élèves. ");
+		EventHandler <MouseEvent> b = new EventHandler <MouseEvent> () {
+			@Override
+			public void handle (MouseEvent e) {
+				String url = "https://ressources.profmath.fr/pdfjs2/web/viewer.html?file=../../web_pdf/38boafmoy.pdf";
+				getHostServices().showDocument(url);
+			}
+		};
+		enonceProbleme140.addEventHandler(MouseEvent.MOUSE_CLICKED, b);
+		
+		Label phrase = new Label ("Problème n° 140. Cherché par certains élèves. ");
 		HBox seanceLine4 = new HBox ();
-		seanceLine4.getChildren().addAll(probleme140, phrase, enonceProbleme140);		
+		seanceLine4.getChildren().addAll(phrase, enonceProbleme140);		
 		
 		dateContent2.getChildren().addAll(titleSeance2, presentationExpo, evaluationCourte, seanceLine3, seanceLine4);
 		
-		Label titreDevoir2 = new Label ("Devoirs", fleche);
+		ImageView ImFleche2 = new ImageView (fleche);
+		ImFleche2.setFitHeight(50);
+		ImFleche2.setFitWidth(50);
+		Label titreDevoir2 = new Label ("Devoirs", ImFleche2);
+		titreDevoir2.setFont(Font.font("Calibri", FontWeight.BOLD, 14));
+		titreDevoir2.setTextFill(Color.web("#2233AA"));
 		CheckBox devoirLine2 = new CheckBox("Problème n°140. Recherche à poursuivre.");
 		dateContent2.setMargin(devoirLine2, new Insets(0, 0, 0, 50));	
 		
@@ -177,8 +253,8 @@ public class CahierTexte extends Application{
 		accordion.getPanes().addAll(dateLabel1, dateLabel2);
 		
 		grandVBox.getChildren().addAll(conteneurTitre, conteneurSousTitre, accordion);
-		
 		Scene scene = new Scene(root, 400, 500);
+		scene.getStylesheets().add(getClass().getResource("styleCahierTexte.css").toExternalForm());
 		primaryStage.setTitle("Cahier de Texte");
 		primaryStage.setScene(scene);
 		primaryStage.show();
